@@ -1,5 +1,8 @@
 {% extends "default/layout.html.twig" %}
 
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+
 {% block title %}Contact
 {% endblock %}
 
@@ -13,4 +16,31 @@
 	<p>Nous sommes actuellement le :
 		{{ "now" | date("d/m/Y H:i:s") }}
 	</p>
+
+	{{ form_start(form) }}
+
+	{{ form_row(form.email, 
+        {'attr': 
+            {'placeholder': "Email"}
+        }) 
+    }}
+	{{ form_row(form.subject, 
+        {
+        'attr': 
+            {'placeholder': "Sujet"},
+        'label': 'Sujet'
+        }) 
+    }}
+	{{ form_row(form.message, 
+        {'attr': 
+            {'placeholder': "Message"}
+        }) 
+    }}
+
+	<button type="submit" class="btn btn-success">
+		Enregistrer
+	</button>
+
+	{{ form_end(form) }}
+
 {% endblock %}
