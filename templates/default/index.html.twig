@@ -7,4 +7,24 @@
 	<h1>
 		{{ 'un titre magnifique' | title }}
 	</h1>
+
+	<table class="table">
+		<tr>
+			<th>Id</th>
+			<th>Email</th>
+			<th>Sujet</th>
+			<th>Message</th>
+			{# <th>Créé le</th> #}
+		</tr>
+		{% for contact in contacts %}
+			<tr>
+				<td>{{ contact.id }}</td>
+				<td>{{ contact.email }}</td>
+				<td>{{ contact.subject }}</td>
+				<td>{{ contact.message }}</td>
+				{# <td>{{ contact.created_at | date('d/m/Y H:i:s') }}</td> #}
+			</tr>
+		{% endfor %}
+	</table>
+
 {% endblock %}
