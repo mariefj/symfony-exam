@@ -5,12 +5,21 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Character;
+use App\Services\ActionResolver;
 
 /**
- * @Route("battle")
+ * @Route("/battle")
  */
 class BattleController extends AbstractController
 {
+    private $actionResolver;
+
+    public function __construct(ActionResolver $actionResolver)
+    {
+        $this->actionResolver = $actionResolver;
+    }
+
     /**
      * @Route("/", name="battle_test")
      */
@@ -38,8 +47,8 @@ class BattleController extends AbstractController
     }
 
     /**
-     * @param Character $gimli
      * @param Character $legolas
+     * @param Character $gimli
      *
      * @return array
      */
@@ -47,11 +56,11 @@ class BattleController extends AbstractController
     {
         $attacks = [];
 
-        while (!$gimli->hasGivenUp() && $legolas->hasGivenUp()) {
+        while (!$gimli->hasGivenUp() && !$legolas->hasGivenUp()) {
             $attacks[] = $this->runAttack($legolas, $gimli);
 
             if (!$gimli->hasGivenUp()) {
-                $attacks[] = $this->runattack($gimli, $legolas);
+                $attacks[] = $this->runAttack($gimli, $legolas);
             }
         }
 
@@ -60,9 +69,13 @@ class BattleController extends AbstractController
 
     protected function runAttack(Character $attacker, Character $defender): array
     {
-        $damage = $actionResolver->attack($attacker, $defender);
-        if ($damage < 0) {
-            $defender->getHits($damage);
+        $damage = 0;
+        while ($damage < 0) {
+            $damage = $this->actionResolver->attack($attacker, $defender);
+        }
+
+        if ($damage > 0) {
+            $defender->getHit($damage);
         }
 
         return [
