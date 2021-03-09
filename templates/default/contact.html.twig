@@ -1,0 +1,16 @@
+{% extends "default/layout.html.twig" %}
+
+{% block title %}Contact
+{% endblock %}
+
+{% block header %}
+	<h1>
+		{{ 'nous contacter' | title }}
+	</h1>
+{% endblock %}
+
+{% block content %}
+	<p>Nous sommes actuellement le :
+		{{ "now" | date("d/m/Y H:i:s") }}
+	</p>
+{% endblock %}
